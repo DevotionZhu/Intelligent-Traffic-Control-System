@@ -37,5 +37,5 @@ There are a few files and folders present in the project which are necessary for
  # Running the program :  
   Run the ml.py file using Python Interpreter installed.
   Type <b> <i>py ml.py</i> </b> (tested on Windows 10).
-The program will start execution by performing the training,testing and then predictions with already recorded sounds.
+The program will start execution by performing the training,testing and then predictions with pre-recorded sounds.
 </p>
