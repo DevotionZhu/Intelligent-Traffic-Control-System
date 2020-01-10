@@ -15,10 +15,11 @@ The project aims to develop an Intelligent Traffic Control System by recognizing
 There are a few files and folders present in the project which are necessary for working of the project or used in intermediate steps during building of the project. Understanding the purpose of each files and contents of folders will help in easy execution of the program.
 
 <ul>
-  <li>Sounds - contains 3-second wav-format sounds of Emergency Vehicles (Ambulance and Traffic) and sounds of Traffic</li>
+  <li>MP_model.tflite - Saved Neural Network for Embedded and Mobile Devices
   <li>MP_model.h5 - Neural Network is saved in this file. This is a Keras-API generated file.</li>
   <li>ml.py - Contains the Keras code for the program. </li>
   <li>spectrogram.py - Can generate spectrograms from a wave file. Needs to be edited by changing the wave file name and output file name
+  <li>Spectrograms.zip - contains all the spectrogram images</li>
   </ul>
   
 # Setting things up : 
