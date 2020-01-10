@@ -32,7 +32,7 @@ There are a few files and folders present in the project which are necessary for
   <li>Matplotlib</li>
   <li>Python (Version 3 used in project)</li>
 </ul>
- <p>From the folder named Spectrograms copy all the sounds to the directory where the file ml.py exists.<br />
+ <p>From the zip file named Spectrograms.zip extract all the sounds to the directory where the file ml.py exists.<br />
   
  # Running the program :  
   Run the ml.py file using Python Interpreter installed.
