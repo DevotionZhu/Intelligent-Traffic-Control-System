@@ -14,41 +14,41 @@ train_images = []
 test_images = []
 train_labels = []
 test_labels = []
-class_reference = ["Ambulance","Firetruck","Silence"]
+class_reference = ["Ambulance","Firetruck","Traffic"]
 
 #setting ambulance sound spectorgram for training
 for i in range(1,171):
-    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE)
+    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE).reshape((84,84,1))
     train_images.append(img)
     train_labels.append(0)
 
 #setting firetruck sound spectorgram for training
 for i in range(201,371):
-    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE)
+    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE).reshape((84,84,1))
     train_images.append(img)
     train_labels.append(1)
 
 #setting ambulance sound spectorgram for testing
 for i in range(171,201):
-    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE)
+    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE).reshape((84,84,1))
     test_images.append(img)
     test_labels.append(0)
 
 #setting firetruck sound spectorgram for testing
 for i in range(371,401):
-    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE)
+    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE).reshape((84,84,1))
     test_images.append(img)
     test_labels.append(1)
 
 #setting traffic sound spectorgram for training
 for i in range(401,571):
-    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE)
+    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE).reshape((84,84,1))
     train_images.append(img)
     train_labels.append(2)
 
 #setting traffic sound spectorgram for testing
 for i in range(571,601):
-    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE)
+    img=cv2.imread("sound_"+str(i)+".png",cv2.IMREAD_GRAYSCALE).reshape((84,84,1))
     test_images.append(img)
     test_labels.append(2)
 
@@ -63,20 +63,27 @@ test_labels = np.array(test_labels)
 train_images = train_images / 255.0
 test_images =  test_images  / 255.0
 
+print(train_images.shape)
+
 
 #Creating the model
 #Input layer contains 28 x 28 = 784 nodes since images and 28 x 28 pixels
 #Output softmax layer contains 3 nodes - Ambulance , Firetruck and Traffic 
-model = keras.Sequential([
-    keras.layers.Flatten(input_shape=(28,28)),
-    keras.layers.Dense(784, activation=tf.nn.sigmoid),
-    keras.layers.Dense(17, activation=tf.nn.sigmoid),
-    keras.layers.Dense(17, activation=tf.nn.sigmoid),
-    keras.layers.Dense(3, activation=tf.nn.softmax)
-])
+model = keras.models.Sequential()
+model.add(keras.layers.Conv2D(32,(3,3),activation='relu',input_shape=(84,84,1)))
+model.add(keras.layers.MaxPooling2D((2,2)))
+model.add(keras.layers.Conv2D(64,(3,3),activation='relu'))
+model.add(keras.layers.MaxPooling2D((2,2)))
+model.add(keras.layers.Conv2D(64,(3,3),activation='relu'))
+model.add(keras.layers.MaxPooling2D((4,4)))
+model.summary()
+model.add(keras.layers.Flatten())
+model.add(keras.layers.Dense(4*4*64, activation='relu'))
+model.add(keras.layers.Dense(3, activation='softmax'))
+
 
 #Compiling the model
-optimizer = keras.optimizers.RMSprop(learning_rate=0.0001)
+optimizer = keras.optimizers.RMSprop(learning_rate=0.00151)
 model.compile(optimizer=optimizer,
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
@@ -84,12 +91,13 @@ model.compile(optimizer=optimizer,
 
 
 #Training the model for 500 epochs
-history = model.fit(train_images, train_labels, epochs=369)
+ep=21
+history = model.fit(train_images, train_labels, epochs=ep)
 
 test_loss = history.history['loss']
 iter=[]
 
-for i in range(0,369):
+for i in range(0,ep):
    iter.append(i)
 
 plt.plot(iter,test_loss)
@@ -101,15 +109,15 @@ plt.show()
 test_loss, test_acc = model.evaluate(test_images, test_labels)
 print('Test accuracy:', test_acc)
 
-img_1 = cv2.imread("ambulance.png",cv2.IMREAD_GRAYSCALE)
+img_1 = cv2.imread("sound_ambulance.png",cv2.IMREAD_GRAYSCALE).reshape((84,84,1))
 img_1 = img_1.astype('float32')
 img_1 = np.expand_dims(img_1,0)
 
-img_2 = cv2.imread("firetruck.png",cv2.IMREAD_GRAYSCALE)
+img_2 = cv2.imread("sound_firetruck.png",cv2.IMREAD_GRAYSCALE).reshape((84,84,1))
 img_2 = img_2.astype('float32')
 img_2 = np.expand_dims(img_2,0)
 
-img_3 = cv2.imread("traffic.png",cv2.IMREAD_GRAYSCALE)
+img_3 = cv2.imread("sound_traffic.png",cv2.IMREAD_GRAYSCALE).reshape((84,84,1))
 img_3 = img_3.astype('float32')
 img_3 = np.expand_dims(img_3,0)
 
